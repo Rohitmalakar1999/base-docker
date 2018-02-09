@@ -37,10 +37,10 @@ RUN apt-get update && \
 #INSTALL TOMCAT
 
 RUN  groupadd tomcat && \
-     useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat && \
+     useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 
 RUN  cd /opt && \
-     wget http://apache.mirrors.ionfish.org/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.tar.gz && \
+     wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.tar.gz && \
      tar -xvzf apache-tomcat-8.5.5.tar.gz && \
      mv apache-tomcat-8.5.5 tomcat && \
      chgrp -R tomcat /opt/tomcat && \
