@@ -27,4 +27,4 @@ ARG MAVEN_VERSION=3.3.9
 RUN apt-get install -y maven
     
 #INSTALL TOMCAT
-RUN  apt-get intsall -y tomcat8
+RUN  apt-get install -y tomcat8
