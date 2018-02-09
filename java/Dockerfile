@@ -15,7 +15,7 @@
 ################## BEGIN INSTALLATION ######################
 
 # pulling the base ubuntu 16.04 after updating the security pataches
-FROM learnkarts/base-ubuntu:latest
+FROM learnkarts/base:latest
 
 #FILE AUTHOR
 MAINTAINER Ramakrishna Thandra <ramakrishna.thandra@gmail.com>
