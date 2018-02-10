@@ -21,28 +21,29 @@ FROM learnkarts/java:latest
 MAINTAINER Ramakrishna Thandra <ramakrishna.thandra@gmail.com>
 
 #ARGUMENTS TO PASSED
-ARG TOMCAT_VERSION=8.5.5
+ARG TOMCAT_VERSION=8.0.49
 
 #INSTALL MAVEN
-RUN apt-get install -y maven
+RUN apt-get install -y maven wget
     
 #INSTALL TOMCAT
-# Here comes the tomcat installation
-RUN apt-get -y install wget && \
-    groupadd tomcat && \
-    useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
-    
-RUN cd /tmp && \
-    wget https://archive.apache.org/dist/tomcat/tomcat-8/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz && \
-    mkdir /opt/tomcat && \
-    tar xzvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1 && \
-    cd /opt/tomcat && \
-    chgrp -R tomcat /opt/tomcat && \
-    chmod -R g+r conf && \
-    chown -R tomcat webapps/ work/ temp/ logs/ 
+RUN wget --quiet --no-cookies http://apache.rediris.es/tomcat/tomcat-8/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/tomcat.tgz && \
+    tar xzvf /tmp/tomcat.tgz -C /opt && \
+    mv /opt/apache-tomcat-${TOMCAT_VERSION} /opt/tomcat && \
+    rm /tmp/tomcat.tgz && \
+    rm -rf /opt/tomcat/webapps/examples && \
+    rm -rf /opt/tomcat/webapps/docs && \
+    rm -rf /opt/tomcat/webapps/ROOT
 
-# Expose the default tomcat port
+#ENV SETTIMG TOMCAT
+ENV CATALINA_HOME /opt/tomcat
+ENV PATH $PATH:$CATALINA_HOME/bin
+
+#EXPOSED PORTS FOR TOMCAT
 EXPOSE 8080
+EXPOSE 8009
+VOLUME "/opt/tomcat/webapps"
+WORKDIR /opt/tomcat
 
-# Start the tomcat (and leave it hanging)
-CMD ["/opt/tomcat/bin/startup.sh"]
+#LAUNCH TOMCAT
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
