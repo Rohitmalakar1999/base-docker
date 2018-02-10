@@ -21,10 +21,28 @@ FROM learnkarts/java:latest
 MAINTAINER Ramakrishna Thandra <ramakrishna.thandra@gmail.com>
 
 #ARGUMENTS TO PASSED
-ARG MAVEN_VERSION=3.3.9
+ARG TOMCAT_VERSION=8.5.5
 
 #INSTALL MAVEN
 RUN apt-get install -y maven
     
 #INSTALL TOMCAT
-RUN  apt-get install -y tomcat8
+# Here comes the tomcat installation
+RUN apt-get -y install wget && \
+    groupadd tomcat && \
+    useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
+    
+RUN cd /tmp && \
+    wget https://archive.apache.org/dist/tomcat/tomcat-8/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz && \
+    mkdir /opt/tomcat && \
+    tar xzvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1 && \
+    cd /opt/tomcat && \
+    chgrp -R tomcat /opt/tomcat && \
+    chmod -R g+r conf && \
+    chown -R tomcat webapps/ work/ temp/ logs/ 
+
+# Expose the default tomcat port
+EXPOSE 8080
+
+# Start the tomcat (and leave it hanging)
+CMD ["/opt/tomcat/bin/startup.sh"]
