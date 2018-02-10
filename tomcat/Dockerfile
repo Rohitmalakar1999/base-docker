@@ -40,10 +40,10 @@ ENV CATALINA_HOME /opt/tomcat
 ENV PATH $PATH:$CATALINA_HOME/bin
 
 #EXPOSED PORTS FOR TOMCAT
-EXPOSE 8080
-EXPOSE 8009
+#EXPOSE 8080
+#EXPOSE 8009
 VOLUME "/opt/tomcat/webapps"
 WORKDIR /opt/tomcat
 
 #LAUNCH TOMCAT
-CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+#CMD ["/opt/tomcat/bin/catalina.sh", "run"]
